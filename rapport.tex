@@ -83,7 +83,7 @@ Le bus CAN est asynchrone, le resynchronisation des horloges se faisant à parti
 
 \subsection{Cela correspond-il à la théorie ?}
 
-Cette grande tolérance correspond parfaitement à la théorie. En effet, les horloges des noeuds CAN sont souvents des composants peu chers, tels que des quartz. D'autre part, dans le cas d'un CAN embarqué sur une automobile, les différences de température en un noeud placé sous le capot et un noeud placé à l'air libre induisent des décalages des horloges, auxquels le protocole doit pouvoir résister, afin de garantir un bon fonctionnement de l'automobile dans des conditions climatiques rudes.
+Cette grande tolérance correspond parfaitement à la théorie. En effet, les horloges des noeuds CAN sont souvent des composants peu chers, tels que des quartz. D'autre part, dans le cas d'un CAN embarqué sur une automobile, les différences de température en un noeud placé sous le capot et un noeud placé à l'air libre induisent des décalages des horloges, auxquels le protocole doit pouvoir résister, afin de garantir un bon fonctionnement de l'automobile dans des conditions climatiques rudes.
 
 \subsection{Expliquez l'intérêt des bits de stuffing}
 
@@ -105,7 +105,7 @@ La charge réseau totale serait ainsi de l'ordre de $165\%$, ce qui est impossib
 
 \subsection{Quelle solution proposez-vous ? Donner une réponse quantitative.} 
 
-Une solution consiste à augmenter le temps entre deux émissions de messages par chaque nœud. En attendant \SI{165}{\micro\second} (ou légèremment plus, pour s'assurer une certaine marge) entre chaque envoi, la charge totale sur le réseau devient inférieure à $100\%$. Ainsi, chaque nœud parvient à envoyer son message.
+Une solution consiste à augmenter le temps entre deux émissions de messages par chaque nœud. En attendant \SI{165}{\micro\second} (ou légèrement plus, pour s'assurer une certaine marge) entre chaque envoi, la charge totale sur le réseau devient inférieure à $100\%$. Ainsi, chaque nœud parvient à envoyer son message.
 
 \subsection{Quelle est la charge réseau théorique de l'ensemble des messages critiques ? Qu'observe t-on ?}
 
@@ -113,7 +113,7 @@ La charge réseau imposé par chaque message critique est désormais $32\%$, et 
 
 \subsection{Les messages accessoires peuvent-ils passer ?}
 
-Les messages accessoires ont une très faible chance d'être transmis. En effet, à moins que leur transmission ne commence précisemment lorsque le bus est vide (environ $3\%$ du temps), leur émission est toujours réalisée en même temps qu'un message plus critique. Par conséquent, les messages accesoires ne sont presque jamais transmis.
+Les messages accessoires ont une très faible chance d'être transmis. En effet, à moins que leur transmission ne commence précisement lorsque le bus est vide (environ $3\%$ du temps), leur émission est toujours réalisée en même temps qu'un message plus critique. Par conséquent, les messages accessoires ne sont presque jamais transmis.
 
 \subsection{Chaque message apporte t-il une information nouvelle ?}
 
@@ -125,7 +125,7 @@ Le système semble fonctionner correctement, puisque les potentiomètres n'émet
 
 \subsection{Le système fonctionne t-il correctement, notamment pour les messages critiques ? Calculez alors la charge réseau des messages critiques.}
 
-Comme les potentiomètres des deux premiers nœuds sont particulièrement instables, des messages sont émis en permanence sur le bus, qui se retrouve saturé. Ainsi, les messages moins prioritaires ne sont jamais transmis. Le système ne fonctionne pas correctement, car les variations de valeur des deux premiers potentiomètres ne sont pas pertinentes (elles résultent ici d'un artefact dans le code des microcontrolleurs associés, mais pourraient être liée à une fluctuation de la mesure, et ne devraient pas empêcher la diffusion des autres messages). En admettant que les valeurs des potentiomètres changent toutes les \SI{100}{\micro\second}, on obtient une charge réseau des messages critiques de l'ordre de $165\%$. Ainsi, les messages du nœud 2 ne sont jamais transmis (les deux premiers nœuds occupent $110\%$ du réseau).
+Comme les potentiomètres des deux premiers nœuds sont particulièrement instables, des messages sont émis en permanence sur le bus, qui se retrouve saturé. Ainsi, les messages moins prioritaires ne sont jamais transmis. Le système ne fonctionne pas correctement, car les variations de valeur des deux premiers potentiomètres ne sont pas pertinentes (elles résultent ici d'un artefact dans le code des microcontrôleurs associés, mais pourraient être liée à une fluctuation de la mesure, et ne devraient pas empêcher la diffusion des autres messages). En admettant que les valeurs des potentiomètres changent toutes les \SI{100}{\micro\second}, on obtient une charge réseau des messages critiques de l'ordre de $165\%$. Ainsi, les messages du nœud 2 ne sont jamais transmis (les deux premiers nœuds occupent $110\%$ du réseau).
 
 \subsection{Que pouvez-vous dire de la fiabilité de la méthode d'envoi sur changements d'état ?}
 
