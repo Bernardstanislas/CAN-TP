@@ -45,4 +45,38 @@ Pour émettre un message, la CPU doit envoyer l'identifiant du message, ainsi qu
 
 Le débit de ce CAN est de $1Mbps$. Dans une trame CAN, on a $1+11+1+6+15+1+1+1+7+3+8*n_{octets}$ bits, soit ici 55 bits. La durée approximative d'une trame est donc de \SI{55}{\micro\second}.
 
+\section{La trame CAN}
+
+\subsection{Une fois les signaux affichés, à l'aide de la touche SAVE, récupérez le signal sur votre clé et imprimez-le. Décomposez alors la trame en champs principaux. Retrouvez la valeur de l'identifiant et des données.}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{releve_1.png}
+\caption{Capture d'une trame CAN}
+\end{figure}
+
+La décomposition de la trame est annotée en violet sur la capture. On peut donc y lire que l'identifiant est $51A$ et que l'octet de données vaut $46$.
+
+\subsection{Quelle est la trame de plus grande priorité ?}
+
+La trame de plus grande priorité est la trame donc l'adresse est la plus faible. Ici, par ordre de priorité, on a donc la valeur du potentiomètre 0 (adresse $50A$), la valeur du potentiomètre 1 (adresse $51A$), puis la valeur du potentiomètre 2 (adresse $52A$).
+
+\subsection{La trame donnant la valeur envoyée par le noeud 2 apparaît-elle ? Pourquoi ? Montrez sur votre relevé de signaux comment se fait l'arbitrage.}
+
+La trame envoyée par le noeud 2 n'apparaît jamais, car elle est toujours écrasé par les trames $50A$ et $51A$, qui sont émises trop fréquemment pour que $52A$ ait le droit à la parole sur le bus.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{releve_2.png}
+\caption{Démonstration d'un arbitrage}
+\end{figure}
+
+\section{Tolérance sur les horloges}
+
+\subsection{A partir de quelles valeurs voyez-vous apparaître des erreurs de réception ou transmission ?}
+
+En dehors de la plage $[7800kHz, 8130kHz$, les erreurs commencent à apparaitre.
+
+\subsection{Le bus CAN est-il synchrone ou asynchrone ? Que pouvez-vous dire sur la tolérance des horloges du bus CAN ?}
+
 \end{document}
