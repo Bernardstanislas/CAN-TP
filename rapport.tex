@@ -75,8 +75,22 @@ La trame envoyée par le noeud 2 n'apparaît jamais, car elle est toujours écra
 
 \subsection{A partir de quelles valeurs voyez-vous apparaître des erreurs de réception ou transmission ?}
 
-En dehors de la plage $[7800kHz, 8130kHz$, les erreurs commencent à apparaitre.
+En dehors de la plage $[7800kHz, 8130kHz]$, les erreurs commencent à apparaitre.
 
 \subsection{Le bus CAN est-il synchrone ou asynchrone ? Que pouvez-vous dire sur la tolérance des horloges du bus CAN ?}
+
+Le bus CAN est asynchrone, le resynchronisation des horloges se faisant à partir du signal lui-même. La tolérance mesurée ici est de l'ordre de $2\%$, ce qui est relativement élevé. Le bus CAN est donc très tolérant sur les horloges.
+
+\subsection{Cela correspond-il à la théorie ?}
+
+Cette grande tolérance correspond parfaitement à la théorie. En effet, les horloges des noeuds CAN sont souvents des composants peu chers, tels que des quartz. D'autre part, dans le cas d'un CAN embarqué sur une automobile, les différences de température en un noeud placé sous le capot et un noeud placé à l'air libre induisent des décalages des horloges, auxquels le protocole doit pouvoir résister, afin de garantir un bon fonctionnement de l'automobile dans des conditions climatiques rudes.
+
+\subsection{Expliquez l'intérêt des bits de stuffing}
+
+Les bits de stuffing ont un intérêt double. D'une part, ils permettent de distinguer une longue série de 0 d'une trame d'erreur. D'autre part, ils permettent de ne pas laisser une trop longue série de bits identiques se succéder, et d'assurer ainsi une bonne synchronisation des horloges quel que soit le message à transmettre/recevoir.
+
+\subsection{Quel est l'intérêt de l'oscilloscope (environ 6000 euros) par rapport à l'analyseur de bus CAN présent sur les maquettes (environ 50 euros) ?}
+
+L'intérêt de l'oscilloscope est de pouvoir analyser n'importe quel signal passant sur le bus. Contrairement à l'analyseur, il est possible avec l'oscilloscope de détecter des trames d'erreurs, des problèmes liés aux transceivers, au bus, etc... L'oscilloscope affichera dans tous les cas la donnée brute, l'analyseur n'affichera la donnée que si elle est correcte.
 
 \end{document}
