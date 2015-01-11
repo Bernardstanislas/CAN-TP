@@ -93,4 +93,50 @@ Les bits de stuffing ont un intérêt double. D'une part, ils permettent de dist
 
 L'intérêt de l'oscilloscope est de pouvoir analyser n'importe quel signal passant sur le bus. Contrairement à l'analyseur, il est possible avec l'oscilloscope de détecter des trames d'erreurs, des problèmes liés aux transceivers, au bus, etc... L'oscilloscope affichera dans tous les cas la donnée brute, l'analyseur n'affichera la donnée que si elle est correcte.
 
+\section{Protocoles d'émission}
+
+\subsection{Pour chaque noeud, quelle serait la charge réseau qu'il imposerait s'il était seul à parler ?}
+
+On a vu précédemment qu'une trame dure approximativement \SI{55}{\micro\second}. Ainsi, un nœud seul émettant une trame toutes les \SI{100}{\micro\second} imposerait une charge réseau de l'ordre de $55\%$.
+
+\subsection{Quelle serait la charge réseau totale ? Est-ce possible ? Quelle est la conséquence ?}
+
+La charge réseau totale serait ainsi de l'ordre de $165\%$, ce qui est impossible. Par conséquent, le message le moins prioritaire (ici, celui du nœud 2) est toujours émis en même temps qu'un message plus prioritaire, et ne peut jamais être transmis. On retrouve par le calcul ce que l'on avait observé à l'oscilloscope.
+
+\subsection{Quelle solution proposez-vous ? Donner une réponse quantitative.} 
+
+Une solution consiste à augmenter le temps entre deux émissions de messages par chaque nœud. En attendant \SI{165}{\micro\second} (ou légèremment plus, pour s'assurer une certaine marge) entre chaque envoi, la charge totale sur le réseau devient inférieure à $100\%$. Ainsi, chaque nœud parvient à envoyer son message.
+
+\subsection{Quelle est la charge réseau théorique de l'ensemble des messages critiques ? Qu'observe t-on ?}
+
+La charge réseau imposé par chaque message critique est désormais $32\%$, et la charge totale imposée par les messages critiques $97\%$. On remarque que les messages du nœud 2 sont désormais correctement transmis.
+
+\subsection{Les messages accessoires peuvent-ils passer ?}
+
+Les messages accessoires ont une très faible chance d'être transmis. En effet, à moins que leur transmission ne commence précisemment lorsque le bus est vide (environ $3\%$ du temps), leur émission est toujours réalisée en même temps qu'un message plus critique. Par conséquent, les messages accesoires ne sont presque jamais transmis.
+
+\subsection{Chaque message apporte t-il une information nouvelle ?}
+
+La majorité des messages n'apporte pas d'information nouvelle, puisque les valeurs des potentiomètres sont transmises mêmes si elles n'ont pas varié depuis le dernier message.
+
+\subsection{Le système fonctionne t-il correctement ?}
+
+Le système semble fonctionner correctement, puisque les potentiomètres n'émettent de messages que lorsque leur valeur change. Ainsi, le bus est souvent libre, et les messages accessoires peuvent être transmis.
+
+\subsection{Le système fonctionne t-il correctement, notamment pour les messages critiques ? Calculez alors la charge réseau des messages critiques.}
+
+Comme les potentiomètres des deux premiers nœuds sont particulièrement instables, des messages sont émis en permanence sur le bus, qui se retrouve saturé. Ainsi, les messages moins prioritaires ne sont jamais transmis. Le système ne fonctionne pas correctement, car les variations de valeur des deux premiers potentiomètres ne sont pas pertinentes (elles résultent ici d'un artefact dans le code des microcontrolleurs associés, mais pourraient être liée à une fluctuation de la mesure, et ne devraient pas empêcher la diffusion des autres messages). En admettant que les valeurs des potentiomètres changent toutes les \SI{100}{\micro\second}, on obtient une charge réseau des messages critiques de l'ordre de $165\%$. Ainsi, les messages du nœud 2 ne sont jamais transmis (les deux premiers nœuds occupent $110\%$ du réseau).
+
+\subsection{Que pouvez-vous dire de la fiabilité de la méthode d'envoi sur changements d'état ?}
+
+La méthode d'envoi sur changements d'états (sans inhibit time) n'est pas fiable. En effet, si l'une des grandeurs obervées fluctue (à cause du phénomène physique, ou d'une imprécision du capteur), il existe un risque que le message correspondant soit envoyé en continu et sature le bus.
+
+\subsection{Le système fonctionne t-il correctement ?}
+
+On obtient désormais un système fonctionnel, même lorsque les deux premiers potentiomètres fluctuent autour de la valeur 100.
+
+\subsection{Calculez la charge réseau maximale des messages critiques. Que concluez-vous ?}
+
+Chaque nœud impose une charge réseau de $34\%$, soit une charge totale des messages critiques de $103\%$. Ainsi, tous les messages critiques seront systématiquement transmis. De plus, à moins que toutes les grandeurs associées aux messages critiques fluctuent à plus de \SI{160}{\micro\second}, le bus sera fréquemment libre pour assurer la transmission des messages accessoires.
+
 \end{document}
